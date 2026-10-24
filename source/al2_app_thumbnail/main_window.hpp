@@ -75,12 +75,12 @@ namespace apn::app_thumbnail
 					state.rc = rc;
 
 					// サムネイルウィンドウのオーナーを変更します。
-					::SetWindowLongPtrW(thumbnail_window,
-						GWLP_HWNDPARENT, (LONG_PTR)(HWND)*this);
+//					::SetWindowLongPtrW(thumbnail_window,
+//						GWLP_HWNDPARENT, (LONG_PTR)(HWND)*this);
 
 					// サムネイルウィンドウの位置も更新します。
 					my::set_window_pos(thumbnail_window, nullptr,
-						&rc, SWP_NOZORDER | SWP_ASYNCWINDOWPOS);
+						&rc, SWP_NOZORDER | SWP_NOACTIVATE | SWP_ASYNCWINDOWPOS);
 
 					if (thumbnail)
 					{
@@ -104,7 +104,8 @@ namespace apn::app_thumbnail
 
 						// サムネイルプロパティを更新します。
 						DWM_THUMBNAIL_PROPERTIES dwm_tp {};
-						dwm_tp.dwFlags = DWM_TNP_RECTDESTINATION | DWM_TNP_VISIBLE | DWM_TNP_OPACITY | DWM_TNP_SOURCECLIENTAREAONLY;
+						dwm_tp.dwFlags = DWM_TNP_RECTDESTINATION | DWM_TNP_VISIBLE |
+							DWM_TNP_OPACITY | DWM_TNP_SOURCECLIENTAREAONLY;
 						dwm_tp.rcDestination = { x, y, x + w, y + h };
 						dwm_tp.fVisible = TRUE;
 						dwm_tp.opacity = 255;
@@ -115,7 +116,7 @@ namespace apn::app_thumbnail
 				}
 
 				// サムネイルウィンドウも表示します。
-				if (flag_need_show) ::ShowWindowAsync(thumbnail_window, SW_SHOWNA);
+				if (flag_need_show) ::ShowWindowAsync(thumbnail_window, SW_SHOWNOACTIVATE);
 			}
 			// プレースホルダーが表示されていない場合は
 			else
